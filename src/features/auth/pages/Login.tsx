@@ -4,6 +4,7 @@ import Icon from "../../../components/ui/Icon"
 import { ApiError } from "../../../plugins/axios"
 import { login } from "../services/authService"
 import type { AuthUser } from "../types/auth.type"
+import companyLogo from "../../../assets/images/companyLogo.png"
 
 interface LoginProps {
   onLogin: (token: string, user: AuthUser) => void
@@ -39,7 +40,7 @@ export default function Login({ onLogin }: LoginProps) {
     <main className="login-page">
       <section className="login-showcase">
         <div className="login-showcase-glow" />
-        <div className="login-brand"><span className="login-brand-mark"><Icon name="box" size={21} /></span><span>Orbit<span>Ops</span></span></div>
+        <div className="login-brand"><img className="login-company-logo" src={companyLogo} alt="Luminix - Illuminating the Future" /></div>
         <div className="login-promise">
           <div className="login-kicker"><span /> THE SMARTER WAY TO WORK</div>
           <h1>Everything in<br />its <span>right place.</span></h1>
@@ -57,7 +58,7 @@ export default function Login({ onLogin }: LoginProps) {
 
       <section className="login-form-side">
         <div className="login-form-wrap">
-          <div className="login-mobile-brand"><span className="login-brand-mark"><Icon name="box" size={20} /></span><span>Orbit<span>Ops</span></span></div>
+          <div className="login-mobile-brand"><img className="login-company-logo" src={companyLogo} alt="Luminix - Illuminating the Future" /></div>
           <div className="login-heading"><span className="login-welcome-icon"><Icon name="sparkles" size={18} /></span><p>WELCOME BACK</p><h2>Sign in to your workspace</h2><span>Pick up right where your team left off.</span></div>
           <form onSubmit={handleSubmit} className="login-form">
             {error && <div className="login-error" role="alert"><Icon name="activity" size={17} /><span>{error}</span></div>}

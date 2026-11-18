@@ -6,6 +6,7 @@ import type { Paginator } from "../../utils/ui"
 import Icon from "../ui/Icon"
 import { getPageTitle } from "../../utils/navigation"
 import type { WorkspaceContext } from "../../hooks/useWorkspace"
+import companyLogo from "../../assets/images/companyLogo.png"
 
 interface AppLayoutProps {
   token: string
@@ -104,11 +105,8 @@ export default function AppLayout({ token, user, onLogout }: AppLayoutProps) {
       {sidebarOpen && <button className="sidebar-backdrop" aria-label="Close navigation" onClick={() => setSidebarOpen(false)} />}
       <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
         <div className="brand-lockup">
-          <div className="brand-mark"><Icon name="box" size={21} /></div>
-          <div>
-            <div className="brand-name">Orbit<span>Ops</span></div>
-            <div className="brand-caption">ASSET MANAGEMENT</div>
-          </div>
+          <img className="company-logo-sidebar" src={companyLogo} alt="Luminix - Illuminating the Future" />
+          <div className="brand-caption">IT Asset Management</div>
           <button className="icon-button mobile-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu"><Icon name="close" /></button>
         </div>
 
