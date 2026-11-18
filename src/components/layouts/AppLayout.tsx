@@ -126,7 +126,6 @@ export default function AppLayout({ token, user, onLogout }: AppLayoutProps) {
                 >
                   <Icon name={item.icon} size={18} />
                   <span>{item.label}</span>
-                  {item.path === "/audits" && <span className="nav-soon">LIVE</span>}
                 </NavLink>
               ))}
             </div>

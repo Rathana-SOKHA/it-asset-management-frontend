@@ -63,7 +63,11 @@ export default function Login({ onLogin }: LoginProps) {
             {error && <div className="login-error" role="alert"><Icon name="activity" size={17} /><span>{error}</span></div>}
             <label className="login-field"><span>Work email</span><span className="login-input-wrap"><Icon name="users" size={17} /><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required autoComplete="username" placeholder="you@company.com" /></span></label>
             <label className="login-field"><span>Password</span><span className="login-input-wrap"><Icon name="shield" size={17} /><input type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} required autoComplete="current-password" placeholder="Enter your password" /><button type="button" className="password-toggle" onClick={() => setShowPassword((value) => !value)}>{showPassword ? "Hide" : "Show"}</button></span></label>
-            <button type="submit" className="login-submit" disabled={loading}>{loading ? <><span className="spinner spinner-light" /> Signing you in...</> : <>Sign in <Icon name="arrow-right" size={17} /></>}</button>
+            <button type="submit" className="login-submit" disabled={loading}>
+              {loading
+                ? <><span className="spinner spinner-light" /><span>Signing you in...</span></>
+                : <><span>Sign in</span><Icon name="arrow-right" size={17} /></>}
+            </button>
           </form>
           <div className="login-help"><span className="login-help-icon"><Icon name="shield" size={16} /></span><p><strong>Your workspace, kept secure.</strong><br />Access is managed by your organization’s administrator.</p></div>
           <div className="login-bottom"><span>© {new Date().getFullYear()} OrbitOps</span><span>Secure asset management</span></div>
