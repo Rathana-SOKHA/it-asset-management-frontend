@@ -68,6 +68,21 @@ export default function Dashboard() {
   const healthPercent = stats?.total
     ? Math.round(Math.max(0, stats.total - stats.under_maintenance - stats.damaged - stats.disposed) / stats.total * 100)
     : 0
+  const healthSlices = stats ? [
+    { label: "Available", value: stats.available, color: "#41a787", tone: "green" },
+    { label: "Assigned", value: stats.assigned, color: "#438bd4", tone: "violet" },
+    { label: "In repair", value: stats.under_maintenance, color: "#e0a13d", tone: "orange" },
+    { label: "Damaged", value: stats.damaged, color: "#dd7280", tone: "red" },
+  ] : []
+  const healthSliceTotal = healthSlices.reduce((total, slice) => total + slice.value, 0)
+  let healthOffset = 0
+  const healthGradient = healthSliceTotal
+    ? `conic-gradient(${healthSlices.map((slice) => {
+      const start = healthOffset
+      healthOffset += slice.value / healthSliceTotal * 100
+      return `${slice.color} ${start}% ${healthOffset}%`
+    }).join(", ")})`
+    : "conic-gradient(#e8ebf1 0% 100%)"
 
   if (loading) return <LoadingState label="Preparing your overview..." />
   if (error) return <ErrorState message={error} onRetry={() => void loadDashboard()} />
@@ -137,10 +152,15 @@ export default function Dashboard() {
             </div>
             <div className="surface-card status-card">
               <div className="card-heading"><div><span className="eyebrow">AT A GLANCE</span><h2>Asset health</h2></div><span className="health-mark"><Icon name="activity" size={16} /></span></div>
-              <div className="health-score">{healthPercent}<span>%</span></div>
-              <p className="health-caption">of tracked assets are in good standing</p>
-              <div className="health-progress"><span style={{ width: `${healthPercent}%` }} /></div>
-              <div className="health-legend"><span><i className="legend-dot green" />Available <b>{stats.available}</b></span><span><i className="legend-dot violet" />Assigned <b>{stats.assigned}</b></span><span><i className="legend-dot orange" />In repair <b>{stats.under_maintenance}</b></span><span><i className="legend-dot red" />Damaged <b>{stats.damaged}</b></span></div>
+              <div className="health-visual">
+                <div className="health-chart-wrap">
+                  <div className="health-chart" style={{ background: healthGradient }} role="img" aria-label={`Asset health: ${healthPercent}% in good standing`}>
+                    <div className="health-chart-center"><div className="health-score">{healthPercent}<span>%</span></div></div>
+                  </div>
+                  <p className="health-caption">of tracked assets are in good standing</p>
+                </div>
+                <div className="health-legend">{healthSlices.map((slice) => <span key={slice.label}><i className={`legend-dot ${slice.tone}`} />{slice.label}<b>{slice.value}</b></span>)}</div>
+              </div>
             </div>
           </section>
 

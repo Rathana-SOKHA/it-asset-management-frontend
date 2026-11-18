@@ -33,6 +33,7 @@ const buyingRoles = ["Administrator", "IT Admin"]
 const insightsRoles = ["Administrator", "IT Admin", "IT Staff", "Department Manager", "Management"]
 const adminRoles = ["Administrator"]
 const logRoles = ["Administrator", "IT Admin"]
+const themeStorageKey = "it-asset-theme"
 
 const navigation: { heading: string; items: NavigationItem[] }[] = [
   {
@@ -72,6 +73,7 @@ export default function AppLayout({ token, user, onLogout }: AppLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [unread, setUnread] = useState(0)
   const [search, setSearch] = useState("")
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem(themeStorageKey) !== "light")
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -79,6 +81,12 @@ export default function AppLayout({ token, user, onLogout }: AppLayoutProps) {
     ...group,
     items: group.items.filter((item) => !item.roles || item.roles.some((role) => user.roles.includes(role))),
   })).filter((group) => group.items.length > 0), [user.roles])
+
+  useEffect(() => {
+    const theme = darkMode ? "dark" : "light"
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem(themeStorageKey, theme)
+  }, [darkMode])
 
   useEffect(() => {
     let active = true
@@ -151,6 +159,16 @@ export default function AppLayout({ token, user, onLogout }: AppLayoutProps) {
                 <kbd>/</kbd>
               </form>
             )}
+            <button
+              className="icon-button theme-toggle"
+              type="button"
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              aria-pressed={darkMode}
+              title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              onClick={() => setDarkMode((enabled) => !enabled)}
+            >
+              <Icon name={darkMode ? "sun" : "moon"} size={18} />
+            </button>
             <button className="icon-button notification-button" aria-label="Notifications" onClick={() => navigate("/notifications")}>
               <Icon name="bell" size={19} />
               {unread > 0 && <span className="notification-dot">{unread > 9 ? "9+" : unread}</span>}
